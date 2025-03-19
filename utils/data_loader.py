@@ -16,14 +16,15 @@ group_activity_labels = {categ:idx for idx, categ in enumerate(group_activity_ca
 
 class GroupActivityRecognitionDataset(Dataset):
     def __init__(self, videos_path, annot_path, split, transform=None):
-        # super(Dataset, GroupActivityRecognition)
+        super().__init__()
+        self.transform = transform
         self.data = []
-        self.load_frame_label_pair(videos_path, annot_path, split, transform)
+        self.load_frame_label_pair(videos_path, annot_path, split, self.transform)
 
 
     def load_frame_label_pair(self, videos_path, annot_path, split, transform):
         split = [str(i) for i in split]
-        label = torch.zeros(len(group_activity_categories)) ## One hot encoding
+        
         
         with open(annot_path, "rb") as annot_file:
             annot_file = pickle.load(annot_file)
@@ -35,23 +36,20 @@ class GroupActivityRecognitionDataset(Dataset):
                 
                 category = annot_file[video][clip]['category']
                 # label = [1 if cur_label == label else 0 for cur_label in config.model['class_labels']] ## One hot encoding
-                
+                label = torch.zeros(len(group_activity_categories)) ## One hot encoding
                 label[group_activity_labels[category]] = 1
-                
-                frame = cv2.imread(frame_path)
-                frame = torch.tensor(frame, dtype=torch.float32).permute(2, 0, 1)
-                frame = transform(frame) if transform else frame
 
-                self.data.append((frame, label))
-
-                print(frame_path)
-        
+                self.data.append((frame_path, label))
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, idx):
-        return self.data[idx]
+        frame_path, label = self.data[idx]
+        frame = cv2.imread(frame_path)
+        # frame = torch.tensor(frame, dtype=torch.float32).permute(2, 0, 1)
+        frame = self.transform(image=frame)["image"] if self.transform else frame
+        return (frame, label)
 
 
 def print_dict_hierarchy(d, indent=0):
@@ -61,8 +59,6 @@ def print_dict_hierarchy(d, indent=0):
             print_dict_hierarchy(d[key], indent + 4)
         else:
             continue
-        # elif isinstance(d[key], list):
-            # print_dict_hierarchy(d[0], indent + 4)
 
 if __name__ == "__main__":
     config_path = os.path.join(ROOT, "modeling/configs/baseline1.yaml")
@@ -73,5 +69,6 @@ if __name__ == "__main__":
     split = config.data['video_splits']['train']
 
     group_act = GroupActivityRecognitionDataset(videos_path, annot_path, split)
-    print(group_act.__len__())
+    print(group_act.__getitem__(idx=0))
+
 

@@ -2,6 +2,8 @@ import os
 import yaml
 import pickle
 
+import matplotlib.pyplot as plt
+
 class Config:
     def __init__(self, config_dict):
         self.experiment = config_dict.get("experiment", {})
@@ -33,3 +35,12 @@ def save_checkpoint(model, optimizer, epoch, val_acc, config, exp_dir, epoch_num
     with open(checkpoint_path, 'wb') as f:
         pickle.dump(checkpoint, f)
     print(f"Checkpoint saved at {checkpoint_path}")
+
+def lr_vs_epoch(num_epochs, lrs, save_dir):
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, num_epochs + 1), lrs, marker='o', linestyle='-')
+    plt.xlabel("Epoch")
+    plt.ylabel("Learning Rate")
+    plt.title("Learning Rate vs. Epoch")
+    plt.grid(True)
+    plt.savefig(os.path.join(save_dir, 'learning_rate_plot.png'), bbox_inches='tight')

@@ -9,11 +9,6 @@ class GroupActivity(nn.Module):
         self.resnet50 = models.resnet50(weights="DEFAULT")
         self.resnet50.fc = nn.Linear(in_features= self.resnet50.fc.in_features, out_features=out_features)
 
-        for param in self.resnet50.parameters():
-            param.requires_grad = False
-
-        for param in self.resnet50.fc.parameters():
-            param.requires_grad = True
 
     def forward(self, x):
         return self.resnet50(x)

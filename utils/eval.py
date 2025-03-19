@@ -27,5 +27,4 @@ def get_f1_score(y_true, y_pred, average='weighted', report=False):
         print(classification_report(y_true, y_pred))
     else:
         f1 = f1_score(y_true, y_pred, average=average)
-        print(f"F1 Score: {f1:.4f}")
         return f1
