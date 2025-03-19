@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def plot_conf_matrix(y_true, y_pred, class_names, save_path=None):
-    conf_matrix = confusion_matrix(y_true, y_pred)
+    conf_matrix = confusion_matrix(y_true, y_pred, normalize= 'true')
     
     fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=class_names, yticklabels=class_names, ax=ax)
+    sns.heatmap(conf_matrix*100, annot=True, fmt=".2f", cmap="Blues", xticklabels=class_names, yticklabels=class_names, ax=ax)
     
     ax.set_xlabel("Predicted Label")
     ax.set_ylabel("True Label")

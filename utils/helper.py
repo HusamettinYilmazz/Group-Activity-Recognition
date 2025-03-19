@@ -43,4 +43,4 @@ def lr_vs_epoch(num_epochs, lrs, save_dir):
     plt.ylabel("Learning Rate")
     plt.title("Learning Rate vs. Epoch")
     plt.grid(True)
-    plt.savefig(os.path.join(save_dir, 'learning_rate_plot.png'), bbox_inches='tight')
+    plt.savefig(os.path.join(save_dir, 'epoch_vs_lr.png'), bbox_inches='tight')

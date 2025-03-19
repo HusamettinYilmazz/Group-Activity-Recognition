@@ -71,10 +71,7 @@ def validate_model(data_loader, device, model, loss_func, class_names, save_dir=
             
     f1_score = get_f1_score(y_true, y_pred)
     
-    fig = plot_conf_matrix(y_true, y_pred, class_names)
-    if save_dir:
-        plt.savefig(save_dir, dpi=300)
-        print(f"Confusion matrix saved at: {save_dir}")
+    fig = plot_conf_matrix(y_true, y_pred, class_names, save_path= save_dir)
             
     epoch_avg_loss = total_loss / len(data_loader)
     epoch_acc = (total_trues/total_examples) * 100
