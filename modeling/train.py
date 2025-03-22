@@ -79,12 +79,69 @@ def validate_model(data_loader, device, model, loss_func, class_names, save_dir=
     return epoch_avg_loss, epoch_acc, f1_score
 
 
+def continue_from_epoch(model_path, more_epochs):
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    check_point = torch.load(model_path, map_location= device)
+    config = check_point['config']
+    
+    dataset_path = os.path.join(ROOT, config.data['videos_path'])
+    annot_path = os.path.join(ROOT, config.data['annot_path'])
+
+    model = GroupActivity(out_features=config.model['num_classes'])
+    model.load_state_dict(check_point['model'])
+    model.to(device)
+
+    train_transform = check_point['train_transform']
+    
+    val_transform = check_point['val_transform']
+
+    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], crop=config.experiment['crop'], transform=train_transform)
+    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], crop=config.experiment['crop'], transform=val_transform)
+    
+    train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
+    val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
+    
+    optimizer = AdamW(params= model.parameters(), lr=check_point['learning_rate'], weight_decay=float(config.training['weight_decay']))
+    scheduler = lr_scheduler.ReduceLROnPlateau(optimizer=optimizer, mode='min', factor=0.1, patience=2, verbose=True)
+
+    loss_func = nn.CrossEntropyLoss()
+
+    save_dir = os.path.join(ROOT, config.data['output_path'], config.experiment['name'], config.experiment['version'])
+    os.makedirs(save_dir, exist_ok=True)
+    lrs = []
+    for epoch in range(check_point['epoch'], check_point['epoch']+more_epochs+1):
+        save_file = os.path.join(save_dir, f'epoch{epoch}_conf_matrix.png')
+        
+        print(f"Epoch:{epoch}")
+        train_avg_loss, train_acc =train_an_epoch(train_loader, device, model, optimizer, loss_func)
+        print(f"FULL_EPOCH TRAIN: Loss:{train_avg_loss:.3f} & Accuracy:{train_acc:.2f}%")
+        
+        val_avg_loss, val_acc, f1_score = validate_model(val_loader, device, model, loss_func, config.model['class_labels'], save_file)
+        print(f" Validation Loss {val_avg_loss:.4f} | Accuracy {val_acc:.2f}% | F1 Score {f1_score:.4}")
+        
+        scheduler.step(val_avg_loss)
+        
+        cur_lr = optimizer.param_groups[0]['lr']
+        lrs.append(cur_lr)
+        
+        torch.save({
+            'epoch': epoch,
+            'model': model.state_dict(),
+            'optimizer': optimizer.state_dict(),
+            'learning_rate': cur_lr,
+            'val_accuracy': val_acc,
+            'config': config,
+            'train_transform': train_transform,
+            'val_transform': val_transform
+            
+        }, os.path.join(save_dir, f'epoch{epoch}_model.pth'))
+
+
 def train_model(config):
     dataset_path = os.path.join(ROOT, config.data['videos_path'])
     annot_path = os.path.join(ROOT, config.data['annot_path'])
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    # print(device)
 
     train_transform = A.Compose([
         A.Resize(224, 224),
@@ -114,13 +171,13 @@ def train_model(config):
         ToTensorV2()
     ])
     
-    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], transform=train_transform)
-    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], transform=val_transform)
-    test_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['test'], transform=val_transform)
+    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], crop=config.experiment['crop'], transform=train_transform)
+    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], crop=config.experiment['crop'], transform=val_transform)
+    # test_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['test'], crop=config.experiment['crop'], transform=val_transform)
     
     train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
     val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
+    # test_loader = DataLoader(dataset=test_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
 
     model = GroupActivity(out_features=config.model['num_classes'])
     model = model.to(device)
@@ -130,7 +187,7 @@ def train_model(config):
     
     loss_func = nn.CrossEntropyLoss()
 
-    save_dir = os.path.join(ROOT, config.data['output_path'], config.experiment['name'])
+    save_dir = os.path.join(ROOT, config.data['output_path'], config.experiment['name'], config.experiment['version'])
     os.makedirs(save_dir, exist_ok=True)
     lrs = []
     for epoch in range(1, config.training['num_epochs']+1):
@@ -152,20 +209,22 @@ def train_model(config):
             'epoch': epoch,
             'model': model.state_dict(),
             'optimizer': optimizer.state_dict(),
-            'learning rate': cur_lr,
+            'learning_rate': cur_lr,
             'val_accuracy': val_acc,
-            'config': config
+            'config': config,
+            'train_transform': train_transform,
+            'val_transform': val_transform
+
         }, os.path.join(save_dir, f'epoch{epoch}_model.pth'))
 
-    ## Validate test dataset with last model
-    val_avg_loss, val_acc, f1_score = validate_model(test_loader, device, model, loss_func, config.model['class_labels'], save_file)
     lr_vs_epoch(config.training['num_epochs'], lrs, save_dir)
 
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "modeling/configs/baseline1.yaml")
+    config_path = os.path.join(ROOT, "modeling/configs/baseline3.yaml")
     config = load_config(config_path)
     
     train_model(config)
-    
+    model_path = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline 3/V1.0/epoch1_model.pth'
+    continue_from_epoch(model_path, more_epochs=1)
