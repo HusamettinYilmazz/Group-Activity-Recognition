@@ -173,4 +173,4 @@ cython_debug/
 # Data
 data/
 .kaggle/
-modeling/outputs/Baseline 1/epoch15_model.pth
+*.pth
