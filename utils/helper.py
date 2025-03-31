@@ -3,6 +3,7 @@ import yaml
 import pickle
 
 import matplotlib.pyplot as plt
+import torch
 
 class Config:
     def __init__(self, config_dict):
@@ -22,19 +23,23 @@ def load_config(config_path="config.yaml"):
     return config
 
 
-def save_checkpoint(model, optimizer, epoch, val_acc, config, exp_dir, epoch_num):
-    # Saving model as a pickle file at the end of each epoch
-    checkpoint = {
-        'epoch': epoch,
-        'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-        'val_acc': val_acc,
-        'config': config,
-    }
-    checkpoint_path = os.path.join(exp_dir, f"checkpoint_epoch_{epoch_num}.pkl")
-    with open(checkpoint_path, 'wb') as f:
-        pickle.dump(checkpoint, f)
-    print(f"Checkpoint saved at {checkpoint_path}")
+def save_checkpoint(epoch, model, optimizer, cur_lr, val_acc, config, train_transform, val_transform, save_dir):
+    checkpoint_path = os.path.join(save_dir, f'epoch{epoch}_model.pth')
+
+    torch.save({
+            'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'learning_rate': cur_lr,
+            'val_accuracy': val_acc,
+            'config': config,
+            'train_transform': train_transform,
+            'val_transform': val_transform
+
+        }, checkpoint_path)
+
+    print(f"Epoch:{epoch} checkpoint has been saved at:{checkpoint_path}")
+
 
 def lr_vs_epoch(num_epochs, lrs, save_dir):
     plt.figure(figsize=(8, 5))
