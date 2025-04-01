@@ -15,12 +15,13 @@ sys.path.append(ROOT)
 
 
 from baseline1_model import GroupActivity
+from baseline3B_model import GroupActivity3B
 from utils import load_config, GroupActivityRecognitionDataset
 from utils import plot_conf_matrix, get_f1_score
-from utils import lr_vs_epoch, save_checkpoint
+from utils import lr_vs_epoch, save_checkpoint, Logger
 
 
-def train_an_epoch(data_loader, device, model, optimizer, loss_func):
+def train_an_epoch(data_loader, device, model, optimizer, loss_func, logger):
     total_loss, total_trues, total_examples = 0, 0, 0
     model.train()
     for batch_idx, (frames, targets) in enumerate(data_loader):
@@ -41,7 +42,7 @@ def train_an_epoch(data_loader, device, model, optimizer, loss_func):
         total_loss += loss.item()
 
         if batch_idx % 10 == 0:
-            print(f"TRAIN: Batch:{batch_idx}/{len(data_loader)} Loss:{loss.item():.3f} & Accuracy:{(total_trues / total_examples) * 100:.2f}%")
+            logger.info(f"TRAIN: Batch:{batch_idx}/{len(data_loader)} Loss:{loss.item():.3f} & Accuracy:{(total_trues / total_examples) * 100:.2f}%")
     
     epoch_avg_loss = total_loss / len(data_loader)
     epoch_acc = (total_trues / total_examples) * 100
@@ -114,13 +115,13 @@ def train_model(config, checkpoint_path=None):
         ToTensorV2()
     ])
     
-    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], crop=config.experiment['crop'], transform=train_transform)
-    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], crop=config.experiment['crop'], transform=val_transform)
+    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=train_transform)
+    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=val_transform)
     
-    train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
-    val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
+    train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True)
+    val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True)
 
-    model = GroupActivity(out_features=config.model['num_classes'])
+    model = GroupActivity3B(out_features=config.model['num_classes'])
     model = model.to(device)
 
     optimizer = AdamW(params= model.parameters(), lr=float(config.training['learning_rate']), weight_decay=float(config.training['weight_decay']))
@@ -140,25 +141,36 @@ def train_model(config, checkpoint_path=None):
 
     save_dir = os.path.join(ROOT, config.data['output_path'], config.experiment['name'], config.experiment['version'])
     os.makedirs(save_dir, exist_ok=True)
+
+    logger = Logger(save_dir)
+    logger.info(f"Starting the experiment: {config.experiment['name']}_{config.experiment['version']}")
+    logger.info(f"Using device: {device}")
+    logger.info(f"Training dataset size: {len(train_dataset)}")
+    logger.info(f"Validation dataset size: {len(val_dataset)}")
+
     lrs = []
+    logger.info(f"Starting training from epoch: {starting_epoch}")
     for epoch in range(starting_epoch, config.training['num_epochs']+1):
+        logger.info(f"Epoch: {epoch}/{config.training['num_epochs']}")
+        
         save_file = os.path.join(save_dir, f'epoch{epoch}_conf_matrix.png')
         
-        print(f"Epoch:{epoch}")
-        train_avg_loss, train_acc =train_an_epoch(train_loader, device, model, optimizer, loss_func)
-        print(f"FULL_EPOCH TRAIN: Loss:{train_avg_loss:.3f} & Accuracy:{train_acc:.2f}%")
+        train_avg_loss, train_acc =train_an_epoch(train_loader, device, model, optimizer, loss_func, logger)
+        logger.info(f"Epoch:{epoch} average train Loss:{train_avg_loss:.3f} & Accuracy:{train_acc:.2f}%")
         
         val_avg_loss, val_acc, f1_score = validate_model(val_loader, device, model, loss_func, config.model['class_labels'], save_file)
-        print(f" Validation Loss {val_avg_loss:.4f} | Accuracy {val_acc:.2f}% | F1 Score {f1_score:.4}")
-        
+        logger.info(f"Epoch:{epoch} Validation Loss {val_avg_loss:.4f} | Accuracy {val_acc:.2f}% | F1 Score {f1_score:.4}")
+
+        logger.info(f"Current learning rate: {optimizer.param_groups[0]['lr']}")
         scheduler.step(val_avg_loss)
         
         cur_lr = optimizer.param_groups[0]['lr']
         lrs.append(cur_lr)
         
         save_checkpoint(epoch, model, optimizer, cur_lr, val_acc, config, train_transform, val_transform, save_dir)
+    logger.info(f"Training completed successfully")
 
-    lr_vs_epoch(config.training['num_epochs'] - starting_epoch+1, lrs, save_dir)
+    lr_vs_epoch(config.training['num_epochs']-starting_epoch+1, lrs, save_dir)
 
 
 

@@ -19,7 +19,7 @@ ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
 
 from .helper import load_config
 from .boxinfo import BoxInfo
-from modeling.baseline3B_model import GroupActivity3B ## reput the 2 dots ..modeling
+from ..modeling.baseline3B_model import GroupActivity3B
 
 
 group_activity_categories = ["r_set", "r_spike" , "r-pass", "r_winpoint", "l_winpoint", "l-pass", "l-spike", "l_set"]

@@ -1,12 +1,8 @@
-import os 
-import sys
 import torch 
 import torch.nn as nn
 import torchvision.models as models
 from baseline1_model import GroupActivity
 
-ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
-sys.path.append(ROOT)
 
 MODEL_ROOT = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline 3/V1.0/epoch8_model.pth'
 
