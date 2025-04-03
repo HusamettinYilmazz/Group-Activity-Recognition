@@ -19,7 +19,7 @@ ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
 
 from .helper import load_config
 from .boxinfo import BoxInfo
-from ..modeling.baseline3B_model import GroupActivity3B
+# from ..modeling.baseline3B_model import GroupActivity3B
 
 
 group_activity_categories = ["r_set", "r_spike" , "r-pass", "r_winpoint", "l_winpoint", "l-pass", "l-spike", "l_set"]
@@ -30,17 +30,23 @@ person_activity_categories = [categ.lower() for categ in person_activity_categor
 person_activity_labels = {categ:idx for idx, categ in enumerate(person_activity_categories)}
 
 class GroupActivityRecognitionDataset(Dataset):
-    def __init__(self, videos_path, annot_path, split, crop=False, all_players_once=False, transform=None):
+    def __init__(self, videos_path, annot_path, split, seq=False, crop=False, all_players_once=False, transform=None):
         super().__init__()
         self.transform = transform
+        self.seq = seq
+        self.crop = crop
+        self.all_players_once = all_players_once
         self.data = []
+
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model = GroupActivity3B(out_features=1).to(self.device)
+        # self.model = GroupActivity3B(out_features=1).to(self.device)
+        self.model = True
         
-        self.load_frame_label_pair(videos_path, annot_path, split, crop, all_players_once)
+        
+        self.load_frame_label_pair(videos_path, annot_path, split)
 
 
-    def load_frame_label_pair(self, videos_path, annot_path, split, crop, all_players_once):
+    def load_frame_label_pair(self, videos_path, annot_path, split):
         split = [str(i) for i in split]
         
         
@@ -49,11 +55,24 @@ class GroupActivityRecognitionDataset(Dataset):
         
         for video in split:
             video_dir = os.path.join(videos_path, video)
+            
             for clip in annot_file[video]:
                 frame_path = os.path.join(video_dir, clip, f"{clip}.jpg")
+                frame_paths = [frame_path]
+
+                if not self.crop and not self.seq:
+
+                    category = annot_file[video][clip]['category']
+                    # label = [1 if cur_label == label else 0 for cur_label in config.model['class_labels']] ## One hot encoding
+                    label = torch.zeros(len(group_activity_categories)) ## One hot encoding
+                    label[group_activity_labels[category]] = 1
+                    box_info = [None]
+
+                    self.data.append((frame_paths, box_info, label))
+
+                elif self.crop and not self.seq:
                 
-                if crop:                    
-                    if all_players_once:
+                    if self.all_players_once:
                         
                         player_boxes = []
                         for player in annot_file[video][clip]['frame_boxes_dct'][int(clip)]:
@@ -64,7 +83,7 @@ class GroupActivityRecognitionDataset(Dataset):
                         label = torch.zeros(len(group_activity_categories)) ## One hot encoding
                         label[group_activity_labels[category]] = 1
                         
-                        self.data.append((frame_path, player_boxes, label))
+                        self.data.append((frame_paths, player_boxes, label))
                         
                     else:
                         for player in annot_file[video][clip]['frame_boxes_dct'][int(clip)]:
@@ -73,45 +92,73 @@ class GroupActivityRecognitionDataset(Dataset):
                             label = torch.zeros(len(person_activity_categories)) ## One hot encoding
                             label[person_activity_labels[category]] = 1
     
-                            self.data.append((frame_path, box_info, label))
+                            self.data.append((frame_paths, box_info, label))
+
+                elif not self.crop and self.seq:
                     
-                else:
+                    frame_paths = [] 
+                    for i in range(-4, 5):
+                        frame_path = os.path.join(video_dir, clip, f"{int(clip)+i}.jpg")
+                        frame_paths.append(frame_path)
+
                     category = annot_file[video][clip]['category']
                     # label = [1 if cur_label == label else 0 for cur_label in config.model['class_labels']] ## One hot encoding
                     label = torch.zeros(len(group_activity_categories)) ## One hot encoding
                     label[group_activity_labels[category]] = 1
-                    box_info = None
+                    box_info = [None]
+                    
+                    self.data.append((frame_paths, box_info, label))
 
-                    self.data.append((frame_path, box_info, label))
+                else:   ## if self.crop and self.seq: write the logic
+                    pass
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, idx):
-        frame_path, box_info, label = self.data[idx]
-        image = cv2.imread(frame_path)
+        frame_paths, box_info, label = self.data[idx]
 
-        if len(box_info) > 1:
-            crops = []            
-            for box in box_info:
-                x1, y1, x2, y2= box[0], box[1], box[2], box[3]
-                crop = image[y1:y2, x1:x2]
-                crop = self.transform(image=crop)['image'] if self.transform else crop
-                crops.append(crop)
-                
-            stacked_crops = np.stack(crops, axis=0)
-            crops = torch.tensor(stacked_crops, dtype=torch.float32).to(self.device)
-            
-            image = self.model.feat_extraction(crops)  ## both of feature extraction and max pooling applied
-            
-        elif len(box_info) == 1:
-            box_info = box_info[0]
-            x1, y1, x2, y2= box_info[0], box_info[1], box_info[2], box_info[3]
-            crop = image[y1:y2, x1:x2]
-            image = self.transform(image=crop)['image'] if self.transform else crop
-            
-        else:
+        if not self.crop and not self.seq:
+            frame_path = frame_paths[0]
+            image = cv2.imread(frame_paths)
             image = self.transform(image=image)["image"] if self.transform else image
+
+        elif self.crop and not self.seq:
+            frame_path = frame_paths
+            image = cv2.imread(frame_paths)
+
+            if self.all_players_once:
+
+                    crops = []            
+                    for box in box_info:
+                        x1, y1, x2, y2= box[0], box[1], box[2], box[3]
+                        crop = image[y1:y2, x1:x2]
+                        crop = self.transform(image=crop)['image'] if self.transform else crop
+                        crops.append(crop)
+                        
+                    stacked_crops = np.stack(crops, axis=0)
+                    crops = torch.tensor(stacked_crops, dtype=torch.float32).to(self.device) ## Write the logic padding the remained players (from 12) 
+                    ## then pass all of them as list of players and view them in feature extraction step (for baseline3-B)
+                    # image = self.model.feat_extraction(crops)  ## both of feature extraction and max pooling applied
+                    
+            else:
+                box_info = box_info[0]
+                x1, y1, x2, y2= box_info[0], box_info[1], box_info[2], box_info[3]
+                crop = image[y1:y2, x1:x2]
+                image = self.transform(image=crop)['image'] if self.transform else crop
+
+        elif not self.crop and self.seq:
+
+            images = []
+            for frame_path in frame_paths:
+                image = cv2.imread(frame_path)
+                image = self.transform(image=image)["image"] if self.transform else image
+                images.append(image)
+
+            image = torch.stack(images)
+
+        else:   ## if self.crop and self.seq: Write the logic
+            pass
             
         return (image, label)
 
@@ -148,7 +195,7 @@ def load_and_print_pkl_tree(pkl_path):
     print_one_branch(data)
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "modeling/configs/baseline3B.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline4.yaml")
     config = load_config(config_path)
     # print(config.model)
     annot_path = os.path.join(ROOT, config.data["annot_path"])
@@ -174,7 +221,7 @@ if __name__ == "__main__":
         ToTensorV2()
     ])
 
-    group_act = GroupActivityRecognitionDataset(videos_path, annot_path, split, crop=True, all_players_once=False, transform=train_transform)
+    group_act = GroupActivityRecognitionDataset(videos_path, annot_path, split, seq=config.experiment['sequential'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=train_transform)
     print(group_act.__getitem__(idx=0))
 
     # load_and_print_pkl_tree(os.path.join(ROOT, config.data['annot_path']))
