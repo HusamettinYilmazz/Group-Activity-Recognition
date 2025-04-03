@@ -16,6 +16,8 @@ sys.path.append(ROOT)
 
 from baseline1_model import GroupActivity
 from baseline3B_model import GroupActivity3B
+from baseline4_model import SequentialGroupActivity
+
 from utils import load_config, GroupActivityRecognitionDataset
 from utils import plot_conf_matrix, get_f1_score
 from utils import lr_vs_epoch, save_checkpoint, Logger
@@ -115,13 +117,13 @@ def train_model(config, checkpoint_path=None):
         ToTensorV2()
     ])
     
-    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=train_transform)
-    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=val_transform)
+    train_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['train'], seq=config.experiment['sequential'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=train_transform)
+    val_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['validation'], seq=config.experiment['sequential'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=val_transform)
     
-    train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True)
-    val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True)
+    train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True, num_workers=4, pin_memory= True)
+    val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True, num_workers=4, pin_memory= True)
 
-    model = GroupActivity3B(out_features=config.model['num_classes'])
+    model = SequentialGroupActivity(out_features=config.model['num_classes'])
     model = model.to(device)
 
     optimizer = AdamW(params= model.parameters(), lr=float(config.training['learning_rate']), weight_decay=float(config.training['weight_decay']))
@@ -143,7 +145,7 @@ def train_model(config, checkpoint_path=None):
     os.makedirs(save_dir, exist_ok=True)
 
     logger = Logger(save_dir)
-    logger.info(f"Starting the experiment: {config.experiment['name']}_{config.experiment['version']}")
+    logger.info(f"Starting the experiment: {config.experiment['name']} {config.experiment['version']}")
     logger.info(f"Using device: {device}")
     logger.info(f"Training dataset size: {len(train_dataset)}")
     logger.info(f"Validation dataset size: {len(val_dataset)}")
@@ -175,10 +177,10 @@ def train_model(config, checkpoint_path=None):
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "modeling/configs/baseline3.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline4.yaml")
     config = load_config(config_path)
     
     checkpoint_path = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline 3/V1.1/epoch15_model.pth'
-    train_model(config, checkpoint_path)
+    train_model(config)
     
     
