@@ -2,7 +2,6 @@ import os
 import sys
 
 import torch
-from torch._dynamo.skipfiles import check
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import AdamW, lr_scheduler
