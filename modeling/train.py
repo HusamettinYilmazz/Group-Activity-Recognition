@@ -179,7 +179,5 @@ if __name__ == "__main__":
     config_path = os.path.join(ROOT, "configs/baseline4.yaml")
     config = load_config(config_path)
     
-    checkpoint_path = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline 3/V1.1/epoch15_model.pth'
+    checkpoint_path = '/kaggle/working/Group-Activity-Recognition/modeling/outputs/Baseline_4/V1.2/epoch12_model.pth'
     train_model(config)
-    
-    
