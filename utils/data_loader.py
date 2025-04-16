@@ -17,8 +17,8 @@ from torch.utils.data import Dataset
 ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
 # sys.path.append(ROOT)
 
-from .helper import load_config
-from .boxinfo import BoxInfo
+from helper import load_config
+from boxinfo import BoxInfo
 
 
 group_activity_categories = ["r_set", "r_spike" , "r-pass", "r_winpoint", "l_winpoint", "l-pass", "l-spike", "l_set"]
@@ -51,8 +51,10 @@ class GroupActivityRecognitionDataset(Dataset):
         for video in split:
             video_dir = os.path.join(videos_path, video)
             
+            clip_paths = []
             for clip in annot_file[video]:
-                frame_path = os.path.join(video_dir, clip, f"{clip}.jpg")
+                clip_path = os.path.join(video_dir, clip)
+                frame_path = os.path.join(clip_path, f"{clip}.jpg")
                 frame_paths = [frame_path]
 
                 if not self.crop and not self.seq:
@@ -104,10 +106,26 @@ class GroupActivityRecognitionDataset(Dataset):
                     
                     self.data.append((frame_paths, box_info, label))
 
-                else:   ## if self.crop and self.seq: write the logic
-                    ## padding the lost players (12 player) in total for each frame
-                    pass
-                    
+                else:   ## if self.crop and self.seq: write the logic                    
+
+                    frame_paths = {}                   
+                    for i in range(-5, 4):
+                        frame_path = os.path.join(video_dir, clip, f"{int(clip)+i}.jpg")
+                        
+                        frame_player_boxes = []
+                        for player in annot_file[video][clip]['frame_boxes_dct'][int(clip)+i]:
+                            frame_player_boxes.append(player.box)
+                        
+                        frame_paths[frame_path] = frame_player_boxes
+
+                    category = annot_file[video][clip]['category']
+                    # label = [1 if cur_label == label else 0 for cur_label in config.model['class_labels']] ## One hot encoding
+                    label = torch.zeros(len(group_activity_categories)) ## One hot encoding
+                    label[group_activity_labels[category]] = 1
+
+
+                    self.data.append((frame_paths, [None], label))
+        
 
     def __len__(self):
         return len(self.data)
@@ -152,7 +170,23 @@ class GroupActivityRecognitionDataset(Dataset):
             image = torch.stack(images)
 
         else:   ## if self.crop and self.seq: Write the logic
-            pass
+            
+            images = []
+            for frame_path in frame_paths.keys():
+                image = cv2.imread(frame_path)
+            
+                crops = []            
+                for box in frame_paths[frame_path]:
+                    x1, y1, x2, y2= box[0], box[1], box[2], box[3]
+                    crop = image[y1:y2, x1:x2]
+                    crop = self.transform(image=crop)['image'] if self.transform else crop
+                    crops.append(crop)
+
+                crops = torch.stack(crops)
+                image = complete_sequence(crops)
+                images.append(image)
+
+            image = torch.stack(images)
             
         return (image, label)
 
@@ -163,7 +197,7 @@ def complete_sequence(sequence):
             new_frame = torch.zeros(12 - seq_length, c, h, w)
             sequence = torch.cat((sequence, new_frame), dim=0)
 
-        elif seq_length > 12:
+        elif seq_length > 12:cd 
             sequence = sequence[:12]
 
         return sequence
@@ -202,7 +236,7 @@ def load_and_print_pkl_tree(pkl_path):
     print_one_branch(data)
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline3B.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline5.yaml")
     config = load_config(config_path)
     # print(config.model)
     annot_path = os.path.join(ROOT, config.data["annot_path"])
