@@ -10,15 +10,14 @@ import cv2
 import numpy as np
 
 import torch
-import torch.nn as nn
 from torch.utils.data import Dataset
 
 
 ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
 # sys.path.append(ROOT)
 
-from helper import load_config
-from boxinfo import BoxInfo
+from .helper import load_config
+from .boxinfo import BoxInfo
 
 
 group_activity_categories = ["r_set", "r_spike" , "r-pass", "r_winpoint", "l_winpoint", "l-pass", "l-spike", "l_set"]
@@ -197,7 +196,7 @@ def complete_sequence(sequence):
             new_frame = torch.zeros(12 - seq_length, c, h, w)
             sequence = torch.cat((sequence, new_frame), dim=0)
 
-        elif seq_length > 12:cd 
+        elif seq_length > 12: 
             sequence = sequence[:12]
 
         return sequence
