@@ -19,7 +19,6 @@ ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
 
 from .helper import load_config
 from .boxinfo import BoxInfo
-# from ..modeling.baseline3B_model import GroupActivity3B
 
 
 group_activity_categories = ["r_set", "r_spike" , "r-pass", "r_winpoint", "l_winpoint", "l-pass", "l-spike", "l_set"]
@@ -37,10 +36,6 @@ class GroupActivityRecognitionDataset(Dataset):
         self.crop = crop
         self.all_players_once = all_players_once
         self.data = []
-
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        # self.model = GroupActivity3B(out_features=1).to(self.device)
-        self.model = True
         
         
         self.load_frame_label_pair(videos_path, annot_path, split)
@@ -77,7 +72,7 @@ class GroupActivityRecognitionDataset(Dataset):
                         player_boxes = []
                         for player in annot_file[video][clip]['frame_boxes_dct'][int(clip)]:
                             player_boxes.append(player.box)
-                            
+
                         category = annot_file[video][clip]['category']
                         # label = [1 if cur_label == label else 0 for cur_label in config.model['class_labels']] ## One hot encoding
                         label = torch.zeros(len(group_activity_categories)) ## One hot encoding
@@ -110,7 +105,9 @@ class GroupActivityRecognitionDataset(Dataset):
                     self.data.append((frame_paths, box_info, label))
 
                 else:   ## if self.crop and self.seq: write the logic
+                    ## padding the lost players (12 player) in total for each frame
                     pass
+                    
 
     def __len__(self):
         return len(self.data)
@@ -120,27 +117,24 @@ class GroupActivityRecognitionDataset(Dataset):
 
         if not self.crop and not self.seq:
             frame_path = frame_paths[0]
-            image = cv2.imread(frame_paths)
+            image = cv2.imread(frame_path)
             image = self.transform(image=image)["image"] if self.transform else image
 
         elif self.crop and not self.seq:
-            frame_path = frame_paths
-            image = cv2.imread(frame_paths)
+            frame_path = frame_paths[0]
+            image = cv2.imread(frame_path)
 
             if self.all_players_once:
 
-                    crops = []            
-                    for box in box_info:
-                        x1, y1, x2, y2= box[0], box[1], box[2], box[3]
-                        crop = image[y1:y2, x1:x2]
-                        crop = self.transform(image=crop)['image'] if self.transform else crop
-                        crops.append(crop)
-                        
-                    stacked_crops = np.stack(crops, axis=0)
-                    crops = torch.tensor(stacked_crops, dtype=torch.float32).to(self.device) ## Write the logic padding the remained players (from 12) 
-                    ## then pass all of them as list of players and view them in feature extraction step (for baseline3-B)
-                    # image = self.model.feat_extraction(crops)  ## both of feature extraction and max pooling applied
-                    
+                crops = []            
+                for box in box_info:
+                    x1, y1, x2, y2= box[0], box[1], box[2], box[3]
+                    crop = image[y1:y2, x1:x2]
+                    crop = self.transform(image=crop)['image'] if self.transform else crop
+                    crops.append(crop)
+                crops = torch.stack(crops)
+                image = complete_sequence(crops)
+
             else:
                 box_info = box_info[0]
                 x1, y1, x2, y2= box_info[0], box_info[1], box_info[2], box_info[3]
@@ -161,6 +155,19 @@ class GroupActivityRecognitionDataset(Dataset):
             pass
             
         return (image, label)
+
+
+def complete_sequence(sequence):
+        seq_length, c, h, w = sequence.shape
+        if seq_length < 12:
+            new_frame = torch.zeros(12 - seq_length, c, h, w)
+            sequence = torch.cat((sequence, new_frame), dim=0)
+
+        elif seq_length > 12:
+            sequence = sequence[:12]
+
+        return sequence
+
 
 
 def print_one_branch(data, indent=0):
@@ -195,7 +202,7 @@ def load_and_print_pkl_tree(pkl_path):
     print_one_branch(data)
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline4.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline3B.yaml")
     config = load_config(config_path)
     # print(config.model)
     annot_path = os.path.join(ROOT, config.data["annot_path"])

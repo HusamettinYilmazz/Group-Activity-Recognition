@@ -17,7 +17,8 @@ from baseline1_model import GroupActivity
 from baseline3B_model import GroupActivity3B
 from baseline4_model import SequentialGroupActivity
 
-from utils import load_config, GroupActivityRecognitionDataset
+from utils import load_config
+from utils import GroupActivityRecognitionDataset
 from utils import plot_conf_matrix, get_f1_score
 from utils import lr_vs_epoch, save_checkpoint, Logger
 
@@ -122,7 +123,7 @@ def train_model(config, checkpoint_path=None):
     train_loader = DataLoader(dataset=train_dataset, batch_size=config.training['batch_size'], shuffle= True, num_workers=4, pin_memory= True)
     val_loader = DataLoader(dataset=val_dataset, batch_size=config.training['batch_size'], shuffle= True, num_workers=4, pin_memory= True)
 
-    model = SequentialGroupActivity(out_features=config.model['num_classes'])
+    model = GroupActivity3B(out_features=config.model['num_classes'])
     model = model.to(device)
 
     optimizer = AdamW(params= model.parameters(), lr=float(config.training['learning_rate']), weight_decay=float(config.training['weight_decay']))
@@ -176,7 +177,7 @@ def train_model(config, checkpoint_path=None):
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline4.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline3B.yaml")
     config = load_config(config_path)
     
     checkpoint_path = '/kaggle/working/Group-Activity-Recognition/modeling/outputs/Baseline_4/V1.2/epoch12_model.pth'
