@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import AdamW, lr_scheduler
+from torch.cuda.amp import autocast, GradScaler
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import matplotlib.pyplot as plt
@@ -24,18 +25,26 @@ from utils import plot_conf_matrix, get_f1_score
 from utils import lr_vs_epoch, save_checkpoint, Logger
 
 
-def train_an_epoch(data_loader, device, model, optimizer, loss_func, logger):
+def train_an_epoch(data_loader, device, model, optimizer, loss_func, scaler, logger):
     total_loss, total_trues, total_examples = 0, 0, 0
     model.train()
     for batch_idx, (frames, targets) in enumerate(data_loader):
         frames, targets = frames.to(device), targets.to(device)
         optimizer.zero_grad()
 
-        outputs = model(frames)
-        loss = loss_func(outputs, targets)
+        with autocast(dtype=torch.float16):
+            outputs = model(frames)
+            loss = loss_func(outputs, targets)
         
-        loss.backward()
-        optimizer.step()
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
+        
+        # outputs = model(frames)
+        # loss = loss_func(outputs, targets)
+        
+        # loss.backward()
+        # optimizer.step()
 
         pred_outputs = outputs.argmax(1)
         target_classes = targets.argmax(1)
@@ -44,7 +53,7 @@ def train_an_epoch(data_loader, device, model, optimizer, loss_func, logger):
 
         total_loss += loss.item()
 
-        if batch_idx % 10 == 0:
+        if batch_idx % 100 == 0:
             logger.info(f"TRAIN: Batch:{batch_idx}/{len(data_loader)} Loss:{loss.item():.3f} & Accuracy:{(total_trues / total_examples) * 100:.2f}%")
     
     epoch_avg_loss = total_loss / len(data_loader)
@@ -97,7 +106,7 @@ def train_model(config, checkpoint_path=None):
             A.ColorJitter(brightness=0.2),
             A.RandomBrightnessContrast(),
             A.GaussNoise()
-        ], p=0.9),
+        ], p=0.5),
         A.OneOf([
             A.HorizontalFlip(),
             A.VerticalFlip(),
@@ -132,6 +141,8 @@ def train_model(config, checkpoint_path=None):
 
     loss_func = nn.CrossEntropyLoss()
 
+    scaler = GradScaler()
+
     if checkpoint_path:
         checkpoint = torch.load(checkpoint_path, map_location=device)
         starting_epoch = checkpoint['epoch'] + 1
@@ -158,7 +169,7 @@ def train_model(config, checkpoint_path=None):
         
         save_file = os.path.join(save_dir, f'epoch{epoch}_conf_matrix.png')
         
-        train_avg_loss, train_acc =train_an_epoch(train_loader, device, model, optimizer, loss_func, logger)
+        train_avg_loss, train_acc =train_an_epoch(train_loader, device, model, optimizer, loss_func, scaler, logger)
         logger.info(f"Epoch:{epoch} average train Loss:{train_avg_loss:.3f} & Accuracy:{train_acc:.2f}%")
         
         val_avg_loss, val_acc, f1_score = validate_model(val_loader, device, model, loss_func, config.model['class_labels'], save_file)
@@ -181,5 +192,5 @@ if __name__ == "__main__":
     config_path = os.path.join(ROOT, "configs/baseline5.yaml")
     config = load_config(config_path)
     
-    checkpoint_path = '/kaggle/working/Group-Activity-Recognition/modeling/outputs/Baseline_4/V1.2/epoch12_model.pth'
+    checkpoint_path = ''
     train_model(config)

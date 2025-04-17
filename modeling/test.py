@@ -8,10 +8,10 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
-
 sys.path.append(ROOT)
 
 from baseline1_model import GroupActivity
+from baseline5_model import SequentialGroupActivityPooledPersons
 from train import validate_model
 from utils import load_config, GroupActivityRecognitionDataset
 
@@ -22,23 +22,23 @@ def test_model(config, model_path, loss_func, test_transform):
     dataset_path = os.path.join(ROOT, config.data['videos_path'])
     annot_path = os.path.join(ROOT, config.data['annot_path'])
 
-    model = GroupActivity(out_features=config.model['num_classes'])
-    model.load_state_dict(check_point['model'])
+    model = SequentialGroupActivityPooledPersons(out_features=config.model['num_classes'])
+    model.load_state_dict(check_point['model_state_dict'])
     model.to(device)
 
-    test_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['test'], transform=test_transform)
+    test_dataset = GroupActivityRecognitionDataset(dataset_path, annot_path, split=config.data['video_splits']['test'], seq=config.experiment['sequential'], crop=config.experiment['crop'], all_players_once=config.experiment['all_players_once'], transform=test_transform)
     test_loader = DataLoader(dataset=test_dataset, batch_size=config.training['batch_size'], shuffle= True, pin_memory=True)
 
-    save_file=os.path.join(ROOT, config.data['output_path'], config.experiment['name'], 'test_conf_matrix.png')
+    save_file=os.path.join(ROOT, config.data['output_path'], config.experiment['name'], config.experiment['version'], 'test_conf_matrix.png')
     test_avg_loss, test_acc, f1_score = validate_model(test_loader, device, model, loss_func, config.model['class_labels'], save_file)
 
     return test_avg_loss, test_acc, f1_score
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "modeling/configs/baseline1.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline5.yaml")
     config = load_config(config_path)
-    model_path = '/kaggle/working/Group-Activity-Recognition/modeling/outputs/Baseline 1/epoch15_model.pth'
+    model_path = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline_5/V1.0/epoch19_model.pth'
     
     test_transform = A.Compose([
         A.Resize(224, 224),

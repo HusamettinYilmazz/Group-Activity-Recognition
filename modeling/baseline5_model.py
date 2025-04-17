@@ -7,9 +7,9 @@ class SequentialGroupActivityPooledPersons(nn.Module):
     def __init__(self, out_features):
         super().__init__()
         self.resnet50 = models.resnet50(weights="DEFAULT")
-        self.lstm = nn.LSTM(self.resnet50.fc.in_features, hidden_size= 1024 , batch_first= True)
+        self.lstm = nn.LSTM(self.resnet50.fc.in_features, hidden_size= 1024, batch_first= True)
         self.fc = nn.Sequential(
-            nn.Linear(self.lstm.hidden_size + self.resnet50.fc.in_features, 1024),
+            nn.Linear(self.lstm.hidden_size, 1024),
             nn.BatchNorm1d(num_features=1024),
             nn.ReLU(),
             nn.Dropout(0.5),
@@ -32,12 +32,11 @@ class SequentialGroupActivityPooledPersons(nn.Module):
         resnet_out = resnet_out.reshape(batch_size * num_players, seq_length, -1) ## [Batch_size * players, frames, 2048]
         
         lstm_out, (h, c) = self.lstm(resnet_out)  ## [Batch_size, 2048]
-        lstm_out = lstm_out[:, -1, :].view(batch_size, num_players, -1)
+        lstm_out = lstm_out[:, -1, :].view(batch_size, num_players, -1)   ##[Batch_size, players, 1024]
 
-        pooled_lstm_out = self.max_pool(lstm_out)
-        # pooled_resnet_out = self.max_pool(resnet_out[:, 4, :])
-        # preds = self.fc(torch.cat((pooled_lstm_out, resnet_out[:, 4, :]), dim=1))   ## [Batch_size, 1]
-        preds = self.fc(pooled_lstm_out).view(batch_size, -1)
+        pooled_lstm_out = self.max_pool(lstm_out).view(batch_size, -1)   ##[Batch_size, 1024]
+        
+        preds = self.fc(pooled_lstm_out)
         return preds
 
 
