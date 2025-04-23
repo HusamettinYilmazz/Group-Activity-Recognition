@@ -189,7 +189,7 @@ def train_model(config, checkpoint_path=None):
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline5.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline6.yaml")
     config = load_config(config_path)
     
     checkpoint_path = ''
