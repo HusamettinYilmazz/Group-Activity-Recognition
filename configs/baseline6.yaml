@@ -1,7 +1,7 @@
 
 experiment:
-  name: "Baseline_6"
-  version: "V1.0"
+  name: "Baseline__6"
+  version: "V2.0"
   seed: 31
   crop: True
   all_players_once: True

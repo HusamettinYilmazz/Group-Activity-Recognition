@@ -1,0 +1,306 @@
+2025 April 26 11:44:58 [INFO]: Starting the experiment: Baseline_6 V2.0
+2025 April 26 11:44:58 [INFO]: Using device: cuda
+2025 April 26 11:44:58 [INFO]: Training dataset size: 2152
+2025 April 26 11:44:58 [INFO]: Validation dataset size: 1341
+2025 April 26 11:44:58 [INFO]: Starting training from epoch: 1
+2025 April 26 11:44:58 [INFO]: Epoch: 1/20
+2025 April 26 11:45:02 [INFO]: TRAIN: Batch:0/1076 Loss:2.012 & Accuracy:0.00%
+2025 April 26 11:46:31 [INFO]: TRAIN: Batch:100/1076 Loss:2.048 & Accuracy:14.85%
+2025 April 26 11:47:59 [INFO]: TRAIN: Batch:200/1076 Loss:1.839 & Accuracy:15.17%
+2025 April 26 11:49:27 [INFO]: TRAIN: Batch:300/1076 Loss:2.271 & Accuracy:14.45%
+2025 April 26 11:50:56 [INFO]: TRAIN: Batch:400/1076 Loss:1.709 & Accuracy:14.34%
+2025 April 26 11:52:24 [INFO]: TRAIN: Batch:500/1076 Loss:2.791 & Accuracy:14.57%
+2025 April 26 11:53:52 [INFO]: TRAIN: Batch:600/1076 Loss:2.017 & Accuracy:15.39%
+2025 April 26 11:55:21 [INFO]: TRAIN: Batch:700/1076 Loss:1.884 & Accuracy:17.05%
+2025 April 26 11:56:49 [INFO]: TRAIN: Batch:800/1076 Loss:2.167 & Accuracy:18.16%
+2025 April 26 11:58:17 [INFO]: TRAIN: Batch:900/1076 Loss:1.651 & Accuracy:19.70%
+2025 April 26 11:59:45 [INFO]: TRAIN: Batch:1000/1076 Loss:1.725 & Accuracy:20.73%
+2025 April 26 12:00:52 [INFO]: Epoch:1 average train Loss:1.954 & Accuracy:21.47%
+2025 April 26 12:04:23 [INFO]: Epoch:1 Validation Loss 1.5974 | Accuracy 40.04% | F1 Score 0.3464
+2025 April 26 12:04:23 [INFO]: Current learning rate: 0.0001
+2025 April 26 12:04:24 [INFO]: Epoch: 2/20
+2025 April 26 12:04:26 [INFO]: TRAIN: Batch:0/1076 Loss:2.308 & Accuracy:0.00%
+2025 April 26 12:05:55 [INFO]: TRAIN: Batch:100/1076 Loss:1.478 & Accuracy:29.70%
+2025 April 26 12:07:23 [INFO]: TRAIN: Batch:200/1076 Loss:1.671 & Accuracy:32.34%
+2025 April 26 12:08:51 [INFO]: TRAIN: Batch:300/1076 Loss:1.195 & Accuracy:33.89%
+2025 April 26 12:10:19 [INFO]: TRAIN: Batch:400/1076 Loss:2.467 & Accuracy:34.66%
+2025 April 26 12:11:48 [INFO]: TRAIN: Batch:500/1076 Loss:1.126 & Accuracy:34.33%
+2025 April 26 12:13:16 [INFO]: TRAIN: Batch:600/1076 Loss:1.002 & Accuracy:35.02%
+2025 April 26 12:14:44 [INFO]: TRAIN: Batch:700/1076 Loss:1.974 & Accuracy:36.02%
+2025 April 26 12:16:13 [INFO]: TRAIN: Batch:800/1076 Loss:2.312 & Accuracy:36.39%
+2025 April 26 12:17:41 [INFO]: TRAIN: Batch:900/1076 Loss:1.301 & Accuracy:35.85%
+2025 April 26 12:19:09 [INFO]: TRAIN: Batch:1000/1076 Loss:1.833 & Accuracy:36.31%
+2025 April 26 12:20:16 [INFO]: Epoch:2 average train Loss:1.684 & Accuracy:36.20%
+2025 April 26 12:23:42 [INFO]: Epoch:2 Validation Loss 1.4347 | Accuracy 46.46% | F1 Score 0.4528
+2025 April 26 12:23:42 [INFO]: Current learning rate: 0.0001
+2025 April 26 12:23:43 [INFO]: Epoch: 3/20
+2025 April 26 12:23:45 [INFO]: TRAIN: Batch:0/1076 Loss:1.456 & Accuracy:50.00%
+2025 April 26 12:25:13 [INFO]: TRAIN: Batch:100/1076 Loss:0.985 & Accuracy:46.04%
+2025 April 26 12:26:42 [INFO]: TRAIN: Batch:200/1076 Loss:1.188 & Accuracy:44.28%
+2025 April 26 12:28:10 [INFO]: TRAIN: Batch:300/1076 Loss:1.743 & Accuracy:44.19%
+2025 April 26 12:29:38 [INFO]: TRAIN: Batch:400/1076 Loss:1.488 & Accuracy:43.89%
+2025 April 26 12:31:07 [INFO]: TRAIN: Batch:500/1076 Loss:1.088 & Accuracy:44.61%
+2025 April 26 12:32:35 [INFO]: TRAIN: Batch:600/1076 Loss:1.581 & Accuracy:43.76%
+2025 April 26 12:34:03 [INFO]: TRAIN: Batch:700/1076 Loss:1.088 & Accuracy:44.72%
+2025 April 26 12:35:32 [INFO]: TRAIN: Batch:800/1076 Loss:1.117 & Accuracy:44.07%
+2025 April 26 12:37:00 [INFO]: TRAIN: Batch:900/1076 Loss:0.780 & Accuracy:44.40%
+2025 April 26 12:38:28 [INFO]: TRAIN: Batch:1000/1076 Loss:1.225 & Accuracy:44.86%
+2025 April 26 12:39:35 [INFO]: Epoch:3 average train Loss:1.496 & Accuracy:45.17%
+2025 April 26 12:43:01 [INFO]: Epoch:3 Validation Loss 1.1645 | Accuracy 56.75% | F1 Score 0.5488
+2025 April 26 12:43:01 [INFO]: Current learning rate: 0.0001
+2025 April 26 12:43:02 [INFO]: Epoch: 4/20
+2025 April 26 12:43:04 [INFO]: TRAIN: Batch:0/1076 Loss:0.641 & Accuracy:100.00%
+2025 April 26 12:44:33 [INFO]: TRAIN: Batch:100/1076 Loss:1.072 & Accuracy:44.55%
+2025 April 26 12:46:01 [INFO]: TRAIN: Batch:200/1076 Loss:1.497 & Accuracy:44.28%
+2025 April 26 12:47:29 [INFO]: TRAIN: Batch:300/1076 Loss:1.868 & Accuracy:46.01%
+2025 April 26 12:48:58 [INFO]: TRAIN: Batch:400/1076 Loss:1.127 & Accuracy:47.76%
+2025 April 26 12:50:26 [INFO]: TRAIN: Batch:500/1076 Loss:1.056 & Accuracy:48.40%
+2025 April 26 12:51:54 [INFO]: TRAIN: Batch:600/1076 Loss:0.612 & Accuracy:48.42%
+2025 April 26 12:53:23 [INFO]: TRAIN: Batch:700/1076 Loss:1.748 & Accuracy:49.00%
+2025 April 26 12:54:51 [INFO]: TRAIN: Batch:800/1076 Loss:1.826 & Accuracy:49.38%
+2025 April 26 12:56:19 [INFO]: TRAIN: Batch:900/1076 Loss:1.293 & Accuracy:50.17%
+2025 April 26 12:57:48 [INFO]: TRAIN: Batch:1000/1076 Loss:2.718 & Accuracy:51.00%
+2025 April 26 12:58:54 [INFO]: Epoch:4 average train Loss:1.399 & Accuracy:51.07%
+2025 April 26 13:02:20 [INFO]: Epoch:4 Validation Loss 1.0351 | Accuracy 60.25% | F1 Score 0.5691
+2025 April 26 13:02:20 [INFO]: Current learning rate: 0.0001
+2025 April 26 13:02:21 [INFO]: Epoch: 5/20
+2025 April 26 13:02:23 [INFO]: TRAIN: Batch:0/1076 Loss:0.786 & Accuracy:50.00%
+2025 April 26 13:03:51 [INFO]: TRAIN: Batch:100/1076 Loss:1.313 & Accuracy:63.37%
+2025 April 26 13:05:20 [INFO]: TRAIN: Batch:200/1076 Loss:1.730 & Accuracy:58.71%
+2025 April 26 13:06:48 [INFO]: TRAIN: Batch:300/1076 Loss:1.089 & Accuracy:58.97%
+2025 April 26 13:08:16 [INFO]: TRAIN: Batch:400/1076 Loss:0.828 & Accuracy:59.10%
+2025 April 26 13:09:45 [INFO]: TRAIN: Batch:500/1076 Loss:0.888 & Accuracy:59.08%
+2025 April 26 13:11:13 [INFO]: TRAIN: Batch:600/1076 Loss:0.992 & Accuracy:57.74%
+2025 April 26 13:12:41 [INFO]: TRAIN: Batch:700/1076 Loss:1.834 & Accuracy:56.42%
+2025 April 26 13:14:10 [INFO]: TRAIN: Batch:800/1076 Loss:1.521 & Accuracy:55.81%
+2025 April 26 13:15:38 [INFO]: TRAIN: Batch:900/1076 Loss:0.584 & Accuracy:56.55%
+2025 April 26 13:17:06 [INFO]: TRAIN: Batch:1000/1076 Loss:1.494 & Accuracy:56.69%
+2025 April 26 13:18:13 [INFO]: Epoch:5 average train Loss:1.246 & Accuracy:57.16%
+2025 April 26 13:21:40 [INFO]: Epoch:5 Validation Loss 0.8449 | Accuracy 70.54% | F1 Score 0.6914
+2025 April 26 13:21:40 [INFO]: Current learning rate: 0.0001
+2025 April 26 13:21:40 [INFO]: Epoch: 6/20
+2025 April 26 13:21:43 [INFO]: TRAIN: Batch:0/1076 Loss:0.684 & Accuracy:100.00%
+2025 April 26 13:23:11 [INFO]: TRAIN: Batch:100/1076 Loss:1.267 & Accuracy:63.86%
+2025 April 26 13:24:39 [INFO]: TRAIN: Batch:200/1076 Loss:1.047 & Accuracy:62.19%
+2025 April 26 13:26:08 [INFO]: TRAIN: Batch:300/1076 Loss:2.267 & Accuracy:61.79%
+2025 April 26 13:27:36 [INFO]: TRAIN: Batch:400/1076 Loss:1.097 & Accuracy:61.72%
+2025 April 26 13:29:04 [INFO]: TRAIN: Batch:500/1076 Loss:0.430 & Accuracy:61.28%
+2025 April 26 13:30:33 [INFO]: TRAIN: Batch:600/1076 Loss:1.365 & Accuracy:61.15%
+2025 April 26 13:32:01 [INFO]: TRAIN: Batch:700/1076 Loss:1.039 & Accuracy:61.06%
+2025 April 26 13:33:29 [INFO]: TRAIN: Batch:800/1076 Loss:0.727 & Accuracy:62.48%
+2025 April 26 13:34:58 [INFO]: TRAIN: Batch:900/1076 Loss:0.543 & Accuracy:62.38%
+2025 April 26 13:36:26 [INFO]: TRAIN: Batch:1000/1076 Loss:1.226 & Accuracy:61.84%
+2025 April 26 13:37:32 [INFO]: Epoch:6 average train Loss:1.171 & Accuracy:61.38%
+2025 April 26 13:40:59 [INFO]: Epoch:6 Validation Loss 0.9520 | Accuracy 66.96% | F1 Score 0.6727
+2025 April 26 13:40:59 [INFO]: Current learning rate: 0.0001
+2025 April 26 13:40:59 [INFO]: Epoch: 7/20
+2025 April 26 13:41:02 [INFO]: TRAIN: Batch:0/1076 Loss:1.034 & Accuracy:50.00%
+2025 April 26 13:42:30 [INFO]: TRAIN: Batch:100/1076 Loss:1.223 & Accuracy:64.36%
+2025 April 26 13:43:58 [INFO]: TRAIN: Batch:200/1076 Loss:2.558 & Accuracy:61.94%
+2025 April 26 13:45:27 [INFO]: TRAIN: Batch:300/1076 Loss:1.524 & Accuracy:61.46%
+2025 April 26 13:46:55 [INFO]: TRAIN: Batch:400/1076 Loss:0.237 & Accuracy:63.34%
+2025 April 26 13:48:23 [INFO]: TRAIN: Batch:500/1076 Loss:0.334 & Accuracy:62.87%
+2025 April 26 13:49:52 [INFO]: TRAIN: Batch:600/1076 Loss:0.487 & Accuracy:63.56%
+2025 April 26 13:51:20 [INFO]: TRAIN: Batch:700/1076 Loss:1.992 & Accuracy:63.69%
+2025 April 26 13:52:48 [INFO]: TRAIN: Batch:800/1076 Loss:1.530 & Accuracy:64.29%
+2025 April 26 13:54:17 [INFO]: TRAIN: Batch:900/1076 Loss:3.990 & Accuracy:63.32%
+2025 April 26 13:55:45 [INFO]: TRAIN: Batch:1000/1076 Loss:0.579 & Accuracy:63.04%
+2025 April 26 13:56:51 [INFO]: Epoch:7 average train Loss:1.144 & Accuracy:63.15%
+2025 April 26 14:00:18 [INFO]: Epoch:7 Validation Loss 0.8403 | Accuracy 72.33% | F1 Score 0.7037
+2025 April 26 14:00:18 [INFO]: Current learning rate: 0.0001
+2025 April 26 14:00:18 [INFO]: Epoch: 8/20
+2025 April 26 14:00:20 [INFO]: TRAIN: Batch:0/1076 Loss:0.362 & Accuracy:100.00%
+2025 April 26 14:01:49 [INFO]: TRAIN: Batch:100/1076 Loss:0.580 & Accuracy:67.33%
+2025 April 26 14:03:17 [INFO]: TRAIN: Batch:200/1076 Loss:0.760 & Accuracy:63.68%
+2025 April 26 14:04:45 [INFO]: TRAIN: Batch:300/1076 Loss:2.085 & Accuracy:64.62%
+2025 April 26 14:06:14 [INFO]: TRAIN: Batch:400/1076 Loss:0.769 & Accuracy:64.71%
+2025 April 26 14:07:42 [INFO]: TRAIN: Batch:500/1076 Loss:1.589 & Accuracy:64.87%
+2025 April 26 14:09:10 [INFO]: TRAIN: Batch:600/1076 Loss:0.504 & Accuracy:65.56%
+2025 April 26 14:10:39 [INFO]: TRAIN: Batch:700/1076 Loss:0.983 & Accuracy:64.69%
+2025 April 26 14:12:07 [INFO]: TRAIN: Batch:800/1076 Loss:1.966 & Accuracy:64.54%
+2025 April 26 14:13:35 [INFO]: TRAIN: Batch:900/1076 Loss:0.621 & Accuracy:64.32%
+2025 April 26 14:15:03 [INFO]: TRAIN: Batch:1000/1076 Loss:0.208 & Accuracy:64.14%
+2025 April 26 14:16:10 [INFO]: Epoch:8 average train Loss:1.068 & Accuracy:63.94%
+2025 April 26 14:19:36 [INFO]: Epoch:8 Validation Loss 0.7508 | Accuracy 73.45% | F1 Score 0.7148
+2025 April 26 14:19:36 [INFO]: Current learning rate: 0.0001
+2025 April 26 14:19:37 [INFO]: Epoch: 9/20
+2025 April 26 14:19:39 [INFO]: TRAIN: Batch:0/1076 Loss:0.735 & Accuracy:100.00%
+2025 April 26 14:21:08 [INFO]: TRAIN: Batch:100/1076 Loss:0.382 & Accuracy:63.37%
+2025 April 26 14:22:36 [INFO]: TRAIN: Batch:200/1076 Loss:0.532 & Accuracy:65.42%
+2025 April 26 14:24:04 [INFO]: TRAIN: Batch:300/1076 Loss:0.373 & Accuracy:64.62%
+2025 April 26 14:25:33 [INFO]: TRAIN: Batch:400/1076 Loss:0.840 & Accuracy:64.09%
+2025 April 26 14:27:01 [INFO]: TRAIN: Batch:500/1076 Loss:2.288 & Accuracy:66.27%
+2025 April 26 14:28:29 [INFO]: TRAIN: Batch:600/1076 Loss:0.112 & Accuracy:66.81%
+2025 April 26 14:29:58 [INFO]: TRAIN: Batch:700/1076 Loss:1.994 & Accuracy:66.62%
+2025 April 26 14:31:26 [INFO]: TRAIN: Batch:800/1076 Loss:2.090 & Accuracy:66.92%
+2025 April 26 14:32:54 [INFO]: TRAIN: Batch:900/1076 Loss:2.517 & Accuracy:66.93%
+2025 April 26 14:34:23 [INFO]: TRAIN: Batch:1000/1076 Loss:0.380 & Accuracy:66.83%
+2025 April 26 14:35:29 [INFO]: Epoch:9 average train Loss:1.011 & Accuracy:66.96%
+2025 April 26 14:38:55 [INFO]: Epoch:9 Validation Loss 0.7178 | Accuracy 75.09% | F1 Score 0.7326
+2025 April 26 14:38:55 [INFO]: Current learning rate: 0.0001
+2025 April 26 14:38:56 [INFO]: Epoch: 10/20
+2025 April 26 14:38:58 [INFO]: TRAIN: Batch:0/1076 Loss:0.216 & Accuracy:100.00%
+2025 April 26 14:40:27 [INFO]: TRAIN: Batch:100/1076 Loss:0.251 & Accuracy:70.30%
+2025 April 26 14:41:55 [INFO]: TRAIN: Batch:200/1076 Loss:0.435 & Accuracy:71.14%
+2025 April 26 14:43:23 [INFO]: TRAIN: Batch:300/1076 Loss:0.769 & Accuracy:71.10%
+2025 April 26 14:44:52 [INFO]: TRAIN: Batch:400/1076 Loss:1.950 & Accuracy:71.45%
+2025 April 26 14:46:20 [INFO]: TRAIN: Batch:500/1076 Loss:0.583 & Accuracy:71.76%
+2025 April 26 14:47:48 [INFO]: TRAIN: Batch:600/1076 Loss:0.542 & Accuracy:71.30%
+2025 April 26 14:49:17 [INFO]: TRAIN: Batch:700/1076 Loss:0.648 & Accuracy:70.76%
+2025 April 26 14:50:45 [INFO]: TRAIN: Batch:800/1076 Loss:0.653 & Accuracy:70.66%
+2025 April 26 14:52:13 [INFO]: TRAIN: Batch:900/1076 Loss:0.962 & Accuracy:70.64%
+2025 April 26 14:53:41 [INFO]: TRAIN: Batch:1000/1076 Loss:1.471 & Accuracy:71.03%
+2025 April 26 14:54:48 [INFO]: Epoch:10 average train Loss:0.893 & Accuracy:70.82%
+2025 April 26 14:58:14 [INFO]: Epoch:10 Validation Loss 0.9858 | Accuracy 67.04% | F1 Score 0.6528
+2025 April 26 14:58:14 [INFO]: Current learning rate: 0.0001
+2025 April 26 14:58:15 [INFO]: Epoch: 11/20
+2025 April 26 14:58:17 [INFO]: TRAIN: Batch:0/1076 Loss:0.615 & Accuracy:50.00%
+2025 April 26 14:59:46 [INFO]: TRAIN: Batch:100/1076 Loss:1.457 & Accuracy:61.39%
+2025 April 26 15:01:14 [INFO]: TRAIN: Batch:200/1076 Loss:1.228 & Accuracy:67.91%
+2025 April 26 15:02:42 [INFO]: TRAIN: Batch:300/1076 Loss:0.281 & Accuracy:70.10%
+2025 April 26 15:04:10 [INFO]: TRAIN: Batch:400/1076 Loss:3.520 & Accuracy:69.08%
+2025 April 26 15:05:39 [INFO]: TRAIN: Batch:500/1076 Loss:0.285 & Accuracy:68.86%
+2025 April 26 15:07:07 [INFO]: TRAIN: Batch:600/1076 Loss:1.446 & Accuracy:67.97%
+2025 April 26 15:08:35 [INFO]: TRAIN: Batch:700/1076 Loss:0.413 & Accuracy:67.76%
+2025 April 26 15:10:04 [INFO]: TRAIN: Batch:800/1076 Loss:0.412 & Accuracy:68.29%
+2025 April 26 15:11:32 [INFO]: TRAIN: Batch:900/1076 Loss:0.385 & Accuracy:69.26%
+2025 April 26 15:13:00 [INFO]: TRAIN: Batch:1000/1076 Loss:0.513 & Accuracy:69.58%
+2025 April 26 15:14:07 [INFO]: Epoch:11 average train Loss:0.936 & Accuracy:69.24%
+2025 April 26 15:17:33 [INFO]: Epoch:11 Validation Loss 0.8054 | Accuracy 73.30% | F1 Score 0.7348
+2025 April 26 15:17:33 [INFO]: Current learning rate: 0.0001
+2025 April 26 15:17:34 [INFO]: Epoch: 12/20
+2025 April 26 15:17:36 [INFO]: TRAIN: Batch:0/1076 Loss:1.969 & Accuracy:0.00%
+2025 April 26 15:19:05 [INFO]: TRAIN: Batch:100/1076 Loss:3.069 & Accuracy:69.31%
+2025 April 26 15:20:33 [INFO]: TRAIN: Batch:200/1076 Loss:0.086 & Accuracy:72.39%
+2025 April 26 15:22:01 [INFO]: TRAIN: Batch:300/1076 Loss:0.123 & Accuracy:74.92%
+2025 April 26 15:23:30 [INFO]: TRAIN: Batch:400/1076 Loss:0.601 & Accuracy:74.06%
+2025 April 26 15:24:58 [INFO]: TRAIN: Batch:500/1076 Loss:1.227 & Accuracy:73.95%
+2025 April 26 15:26:26 [INFO]: TRAIN: Batch:600/1076 Loss:0.552 & Accuracy:73.29%
+2025 April 26 15:27:54 [INFO]: TRAIN: Batch:700/1076 Loss:1.068 & Accuracy:71.75%
+2025 April 26 15:29:23 [INFO]: TRAIN: Batch:800/1076 Loss:1.106 & Accuracy:71.47%
+2025 April 26 15:30:51 [INFO]: TRAIN: Batch:900/1076 Loss:0.480 & Accuracy:71.48%
+2025 April 26 15:32:19 [INFO]: TRAIN: Batch:1000/1076 Loss:1.132 & Accuracy:71.23%
+2025 April 26 15:33:26 [INFO]: Epoch:12 average train Loss:0.856 & Accuracy:71.51%
+2025 April 26 15:36:52 [INFO]: Epoch:12 Validation Loss 0.6586 | Accuracy 76.81% | F1 Score 0.7679
+2025 April 26 15:36:52 [INFO]: Current learning rate: 0.0001
+2025 April 26 15:36:53 [INFO]: Epoch: 13/20
+2025 April 26 15:36:55 [INFO]: TRAIN: Batch:0/1076 Loss:0.934 & Accuracy:50.00%
+2025 April 26 15:38:24 [INFO]: TRAIN: Batch:100/1076 Loss:1.254 & Accuracy:70.30%
+2025 April 26 15:39:52 [INFO]: TRAIN: Batch:200/1076 Loss:0.154 & Accuracy:74.13%
+2025 April 26 15:41:20 [INFO]: TRAIN: Batch:300/1076 Loss:0.324 & Accuracy:74.92%
+2025 April 26 15:42:49 [INFO]: TRAIN: Batch:400/1076 Loss:0.511 & Accuracy:73.82%
+2025 April 26 15:44:17 [INFO]: TRAIN: Batch:500/1076 Loss:1.636 & Accuracy:73.75%
+2025 April 26 15:45:45 [INFO]: TRAIN: Batch:600/1076 Loss:0.165 & Accuracy:74.21%
+2025 April 26 15:47:13 [INFO]: TRAIN: Batch:700/1076 Loss:0.200 & Accuracy:74.32%
+2025 April 26 15:48:42 [INFO]: TRAIN: Batch:800/1076 Loss:1.345 & Accuracy:74.34%
+2025 April 26 15:50:10 [INFO]: TRAIN: Batch:900/1076 Loss:0.498 & Accuracy:73.75%
+2025 April 26 15:51:38 [INFO]: TRAIN: Batch:1000/1076 Loss:4.080 & Accuracy:73.18%
+2025 April 26 15:52:45 [INFO]: Epoch:13 average train Loss:0.810 & Accuracy:72.58%
+2025 April 26 15:56:11 [INFO]: Epoch:13 Validation Loss 0.6789 | Accuracy 77.70% | F1 Score 0.773
+2025 April 26 15:56:11 [INFO]: Current learning rate: 0.0001
+2025 April 26 15:56:12 [INFO]: Epoch: 14/20
+2025 April 26 15:56:14 [INFO]: TRAIN: Batch:0/1076 Loss:0.335 & Accuracy:100.00%
+2025 April 26 15:57:43 [INFO]: TRAIN: Batch:100/1076 Loss:0.153 & Accuracy:75.74%
+2025 April 26 15:59:11 [INFO]: TRAIN: Batch:200/1076 Loss:0.377 & Accuracy:78.11%
+2025 April 26 16:00:39 [INFO]: TRAIN: Batch:300/1076 Loss:0.323 & Accuracy:76.74%
+2025 April 26 16:02:08 [INFO]: TRAIN: Batch:400/1076 Loss:0.111 & Accuracy:75.56%
+2025 April 26 16:03:36 [INFO]: TRAIN: Batch:500/1076 Loss:0.460 & Accuracy:74.85%
+2025 April 26 16:05:04 [INFO]: TRAIN: Batch:600/1076 Loss:0.630 & Accuracy:75.37%
+2025 April 26 16:06:32 [INFO]: TRAIN: Batch:700/1076 Loss:0.421 & Accuracy:75.32%
+2025 April 26 16:08:01 [INFO]: TRAIN: Batch:800/1076 Loss:0.762 & Accuracy:75.22%
+2025 April 26 16:09:29 [INFO]: TRAIN: Batch:900/1076 Loss:0.239 & Accuracy:75.03%
+2025 April 26 16:10:57 [INFO]: TRAIN: Batch:1000/1076 Loss:2.069 & Accuracy:74.33%
+2025 April 26 16:12:04 [INFO]: Epoch:14 average train Loss:0.778 & Accuracy:74.21%
+2025 April 26 16:15:31 [INFO]: Epoch:14 Validation Loss 0.6802 | Accuracy 78.00% | F1 Score 0.7781
+2025 April 26 16:15:31 [INFO]: Current learning rate: 0.0001
+2025 April 26 16:15:32 [INFO]: Epoch: 15/20
+2025 April 26 16:15:34 [INFO]: TRAIN: Batch:0/1076 Loss:0.760 & Accuracy:50.00%
+2025 April 26 16:17:02 [INFO]: TRAIN: Batch:100/1076 Loss:0.217 & Accuracy:77.23%
+2025 April 26 16:18:31 [INFO]: TRAIN: Batch:200/1076 Loss:0.261 & Accuracy:77.11%
+2025 April 26 16:19:59 [INFO]: TRAIN: Batch:300/1076 Loss:0.349 & Accuracy:76.08%
+2025 April 26 16:21:27 [INFO]: TRAIN: Batch:400/1076 Loss:0.070 & Accuracy:76.06%
+2025 April 26 16:22:56 [INFO]: TRAIN: Batch:500/1076 Loss:0.516 & Accuracy:74.35%
+2025 April 26 16:24:24 [INFO]: TRAIN: Batch:600/1076 Loss:1.760 & Accuracy:74.38%
+2025 April 26 16:25:52 [INFO]: TRAIN: Batch:700/1076 Loss:0.211 & Accuracy:73.47%
+2025 April 26 16:27:21 [INFO]: TRAIN: Batch:800/1076 Loss:0.248 & Accuracy:73.41%
+2025 April 26 16:28:49 [INFO]: TRAIN: Batch:900/1076 Loss:0.346 & Accuracy:73.70%
+2025 April 26 16:30:17 [INFO]: TRAIN: Batch:1000/1076 Loss:0.438 & Accuracy:74.03%
+2025 April 26 16:31:24 [INFO]: Epoch:15 average train Loss:0.778 & Accuracy:74.30%
+2025 April 26 16:34:50 [INFO]: Epoch:15 Validation Loss 0.6742 | Accuracy 78.67% | F1 Score 0.7678
+2025 April 26 16:34:50 [INFO]: Current learning rate: 0.0001
+2025 April 26 16:34:51 [INFO]: Epoch: 16/20
+2025 April 26 16:34:54 [INFO]: TRAIN: Batch:0/1076 Loss:0.347 & Accuracy:100.00%
+2025 April 26 16:36:22 [INFO]: TRAIN: Batch:100/1076 Loss:0.322 & Accuracy:73.27%
+2025 April 26 16:37:50 [INFO]: TRAIN: Batch:200/1076 Loss:0.417 & Accuracy:79.10%
+2025 April 26 16:39:19 [INFO]: TRAIN: Batch:300/1076 Loss:2.164 & Accuracy:79.24%
+2025 April 26 16:40:47 [INFO]: TRAIN: Batch:400/1076 Loss:0.025 & Accuracy:79.68%
+2025 April 26 16:42:15 [INFO]: TRAIN: Batch:500/1076 Loss:0.202 & Accuracy:78.84%
+2025 April 26 16:43:44 [INFO]: TRAIN: Batch:600/1076 Loss:0.109 & Accuracy:78.29%
+2025 April 26 16:45:12 [INFO]: TRAIN: Batch:700/1076 Loss:1.538 & Accuracy:78.46%
+2025 April 26 16:46:40 [INFO]: TRAIN: Batch:800/1076 Loss:1.150 & Accuracy:78.40%
+2025 April 26 16:48:09 [INFO]: TRAIN: Batch:900/1076 Loss:0.581 & Accuracy:78.52%
+2025 April 26 16:49:37 [INFO]: TRAIN: Batch:1000/1076 Loss:0.125 & Accuracy:78.47%
+2025 April 26 16:50:43 [INFO]: Epoch:16 average train Loss:0.634 & Accuracy:78.81%
+2025 April 26 16:54:10 [INFO]: Epoch:16 Validation Loss 0.6460 | Accuracy 79.94% | F1 Score 0.7806
+2025 April 26 16:54:10 [INFO]: Current learning rate: 1e-05
+2025 April 26 16:54:11 [INFO]: Epoch: 17/20
+2025 April 26 16:54:13 [INFO]: TRAIN: Batch:0/1076 Loss:0.677 & Accuracy:50.00%
+2025 April 26 16:55:42 [INFO]: TRAIN: Batch:100/1076 Loss:0.321 & Accuracy:79.70%
+2025 April 26 16:57:10 [INFO]: TRAIN: Batch:200/1076 Loss:0.026 & Accuracy:81.59%
+2025 April 26 16:58:38 [INFO]: TRAIN: Batch:300/1076 Loss:1.795 & Accuracy:79.24%
+2025 April 26 17:00:07 [INFO]: TRAIN: Batch:400/1076 Loss:0.697 & Accuracy:80.05%
+2025 April 26 17:01:35 [INFO]: TRAIN: Batch:500/1076 Loss:0.064 & Accuracy:81.24%
+2025 April 26 17:03:03 [INFO]: TRAIN: Batch:600/1076 Loss:0.109 & Accuracy:81.86%
+2025 April 26 17:04:32 [INFO]: TRAIN: Batch:700/1076 Loss:0.331 & Accuracy:81.74%
+2025 April 26 17:06:00 [INFO]: TRAIN: Batch:800/1076 Loss:2.296 & Accuracy:82.15%
+2025 April 26 17:07:28 [INFO]: TRAIN: Batch:900/1076 Loss:0.635 & Accuracy:82.13%
+2025 April 26 17:08:57 [INFO]: TRAIN: Batch:1000/1076 Loss:0.017 & Accuracy:82.12%
+2025 April 26 17:10:03 [INFO]: Epoch:17 average train Loss:0.526 & Accuracy:82.16%
+2025 April 26 17:13:29 [INFO]: Epoch:17 Validation Loss 0.6530 | Accuracy 80.69% | F1 Score 0.7903
+2025 April 26 17:13:29 [INFO]: Current learning rate: 1e-05
+2025 April 26 17:13:30 [INFO]: Epoch: 18/20
+2025 April 26 17:13:33 [INFO]: TRAIN: Batch:0/1076 Loss:0.046 & Accuracy:100.00%
+2025 April 26 17:15:01 [INFO]: TRAIN: Batch:100/1076 Loss:0.091 & Accuracy:80.69%
+2025 April 26 17:16:29 [INFO]: TRAIN: Batch:200/1076 Loss:0.263 & Accuracy:80.35%
+2025 April 26 17:17:58 [INFO]: TRAIN: Batch:300/1076 Loss:0.144 & Accuracy:80.90%
+2025 April 26 17:19:26 [INFO]: TRAIN: Batch:400/1076 Loss:0.499 & Accuracy:80.17%
+2025 April 26 17:20:54 [INFO]: TRAIN: Batch:500/1076 Loss:0.038 & Accuracy:80.74%
+2025 April 26 17:22:23 [INFO]: TRAIN: Batch:600/1076 Loss:0.440 & Accuracy:81.11%
+2025 April 26 17:23:51 [INFO]: TRAIN: Batch:700/1076 Loss:0.107 & Accuracy:81.24%
+2025 April 26 17:25:19 [INFO]: TRAIN: Batch:800/1076 Loss:0.099 & Accuracy:81.02%
+2025 April 26 17:26:48 [INFO]: TRAIN: Batch:900/1076 Loss:1.396 & Accuracy:80.69%
+2025 April 26 17:28:16 [INFO]: TRAIN: Batch:1000/1076 Loss:0.219 & Accuracy:80.97%
+2025 April 26 17:29:22 [INFO]: Epoch:18 average train Loss:0.549 & Accuracy:81.46%
+2025 April 26 17:32:49 [INFO]: Epoch:18 Validation Loss 0.6498 | Accuracy 79.72% | F1 Score 0.7884
+2025 April 26 17:32:49 [INFO]: Current learning rate: 1e-05
+2025 April 26 17:32:50 [INFO]: Epoch: 19/20
+2025 April 26 17:32:52 [INFO]: TRAIN: Batch:0/1076 Loss:0.070 & Accuracy:100.00%
+2025 April 26 17:34:20 [INFO]: TRAIN: Batch:100/1076 Loss:0.798 & Accuracy:84.16%
+2025 April 26 17:35:49 [INFO]: TRAIN: Batch:200/1076 Loss:0.027 & Accuracy:84.08%
+2025 April 26 17:37:17 [INFO]: TRAIN: Batch:300/1076 Loss:0.156 & Accuracy:86.38%
+2025 April 26 17:38:45 [INFO]: TRAIN: Batch:400/1076 Loss:0.068 & Accuracy:85.29%
+2025 April 26 17:40:14 [INFO]: TRAIN: Batch:500/1076 Loss:0.043 & Accuracy:85.93%
+2025 April 26 17:41:42 [INFO]: TRAIN: Batch:600/1076 Loss:0.279 & Accuracy:84.94%
+2025 April 26 17:43:10 [INFO]: TRAIN: Batch:700/1076 Loss:0.245 & Accuracy:84.95%
+2025 April 26 17:44:38 [INFO]: TRAIN: Batch:800/1076 Loss:1.555 & Accuracy:84.08%
+2025 April 26 17:46:07 [INFO]: TRAIN: Batch:900/1076 Loss:0.096 & Accuracy:83.57%
+2025 April 26 17:47:35 [INFO]: TRAIN: Batch:1000/1076 Loss:0.051 & Accuracy:83.82%
+2025 April 26 17:48:41 [INFO]: Epoch:19 average train Loss:0.468 & Accuracy:84.01%
+2025 April 26 17:52:08 [INFO]: Epoch:19 Validation Loss 0.6179 | Accuracy 79.27% | F1 Score 0.7805
+2025 April 26 17:52:08 [INFO]: Current learning rate: 1e-05
+2025 April 26 17:52:09 [INFO]: Epoch: 20/20
+2025 April 26 17:52:11 [INFO]: TRAIN: Batch:0/1076 Loss:0.221 & Accuracy:100.00%
+2025 April 26 17:53:40 [INFO]: TRAIN: Batch:100/1076 Loss:0.368 & Accuracy:84.65%
+2025 April 26 17:55:08 [INFO]: TRAIN: Batch:200/1076 Loss:0.364 & Accuracy:83.58%
+2025 April 26 17:56:36 [INFO]: TRAIN: Batch:300/1076 Loss:0.140 & Accuracy:84.88%
+2025 April 26 17:58:05 [INFO]: TRAIN: Batch:400/1076 Loss:0.203 & Accuracy:85.41%
+2025 April 26 17:59:33 [INFO]: TRAIN: Batch:500/1076 Loss:2.256 & Accuracy:84.13%
+2025 April 26 18:01:01 [INFO]: TRAIN: Batch:600/1076 Loss:0.259 & Accuracy:83.86%
+2025 April 26 18:02:30 [INFO]: TRAIN: Batch:700/1076 Loss:0.188 & Accuracy:83.17%
+2025 April 26 18:03:58 [INFO]: TRAIN: Batch:800/1076 Loss:0.185 & Accuracy:83.21%
+2025 April 26 18:05:26 [INFO]: TRAIN: Batch:900/1076 Loss:1.034 & Accuracy:82.74%
+2025 April 26 18:06:55 [INFO]: TRAIN: Batch:1000/1076 Loss:0.336 & Accuracy:82.97%
+2025 April 26 18:08:01 [INFO]: Epoch:20 average train Loss:0.493 & Accuracy:82.99%
+2025 April 26 18:11:27 [INFO]: Epoch:20 Validation Loss 0.6755 | Accuracy 79.27% | F1 Score 0.7765
+2025 April 26 18:11:27 [INFO]: Current learning rate: 1e-05
+2025 April 26 18:11:28 [INFO]: Training completed successfully

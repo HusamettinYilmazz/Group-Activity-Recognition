@@ -17,7 +17,7 @@ sys.path.append(ROOT)
 from baseline1_model import GroupActivity
 from baseline3B_model import GroupActivity3B
 from baseline4_model import SequentialGroupActivity
-from baseline5_model import SequentialGroupActivityPooledPersons
+from baseline6_model import SequentialGroupActivityPooledPersons
 
 from utils import load_config
 from utils import GroupActivityRecognitionDataset
@@ -39,12 +39,6 @@ def train_an_epoch(data_loader, device, model, optimizer, loss_func, scaler, log
         scaler.scale(loss).backward()
         scaler.step(optimizer)
         scaler.update()
-        
-        # outputs = model(frames)
-        # loss = loss_func(outputs, targets)
-        
-        # loss.backward()
-        # optimizer.step()
 
         pred_outputs = outputs.argmax(1)
         target_classes = targets.argmax(1)
@@ -53,7 +47,7 @@ def train_an_epoch(data_loader, device, model, optimizer, loss_func, scaler, log
 
         total_loss += loss.item()
 
-        if batch_idx % 100 == 0:
+        if batch_idx % 10 == 0:
             logger.info(f"TRAIN: Batch:{batch_idx}/{len(data_loader)} Loss:{loss.item():.3f} & Accuracy:{(total_trues / total_examples) * 100:.2f}%")
     
     epoch_avg_loss = total_loss / len(data_loader)
