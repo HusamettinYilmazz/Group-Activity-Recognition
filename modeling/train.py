@@ -17,7 +17,7 @@ sys.path.append(ROOT)
 from baseline1_model import GroupActivity
 from baseline3B_model import GroupActivity3B
 from baseline4_model import SequentialGroupActivity
-from baseline6_model import SequentialGroupActivityPooledPersons
+from baseline7_model import SequentialGroupActivityPooledPersons
 
 from utils import load_config
 from utils import GroupActivityRecognitionDataset
@@ -183,7 +183,7 @@ def train_model(config, checkpoint_path=None):
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline6.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline7.yaml")
     config = load_config(config_path)
     
     checkpoint_path = ''
