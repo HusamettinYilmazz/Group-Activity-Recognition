@@ -173,9 +173,10 @@ class GroupActivityRecognitionDataset(Dataset):
             images = []
             for frame_path in frame_paths.keys():
                 image = cv2.imread(frame_path)
-            
+
+                sorted_boxes = sorted(frame_paths[frame_path], key=lambda box: box[0])  ## Sorting all boxes with x1 value
                 crops = []            
-                for box in frame_paths[frame_path]:
+                for box in sorted_boxes:
                     x1, y1, x2, y2= box[0], box[1], box[2], box[3]
                     crop = image[y1:y2, x1:x2]
                     crop = self.transform(image=crop)['image'] if self.transform else crop
@@ -203,39 +204,8 @@ def complete_sequence(sequence):
 
 
 
-def print_one_branch(data, indent=0):
-    """ Recursively print one branch from the root to a leaf. """
-    prefix = " " * (indent * 4)
-
-    if isinstance(data, dict):  # If it's a dictionary, take the first key
-        key = next(iter(data))  # Get first key
-        print(f"{prefix}video: {key}")
-        print_one_branch(data[key], indent + 1)
-    
-    elif isinstance(data, list):  # If it's a list, take the first element
-        if data:
-            print(f"{prefix}image: 0")  # Since it's a list, we assume first item
-            print_one_branch(data[0], indent + 1)
-    
-    elif isinstance(data, tuple):
-        if data:
-            print(f"{prefix}Tuple: (first item)")
-            print_one_branch(data[0], indent + 1)
-    
-    elif isinstance(data, str):  # If it's a string, assume it's a class name
-        print(f"{prefix}class: {data}")
-    
-    elif isinstance(data, BoxInfo):
-        print(f"{prefix}class: {data}")
-
-# Load and print the structure of a .pkl file
-def load_and_print_pkl_tree(pkl_path):
-    with open(pkl_path, 'rb') as f:
-        data = pickle.load(f)
-    print_one_branch(data)
-
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline5.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline8.yaml")
     config = load_config(config_path)
     # print(config.model)
     annot_path = os.path.join(ROOT, config.data["annot_path"])
