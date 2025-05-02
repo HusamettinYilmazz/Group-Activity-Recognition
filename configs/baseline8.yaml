@@ -6,7 +6,9 @@ experiment:
   crop: True
   all_players_once: True
   sequential: True
-  description: "Fine-tuned ResNet-50 with a Two-stage LSTM for Group Activity Recognition Using both Person and Frame sequences"
+  description: >
+            "Fine-tuned ResNet-50 with a Two-stage LSTM for Group Activity Recognition Using both Person and Frame sequences.
+             considering that players are divided into two teams."
 
 data:
   dataset_name: "Group Activity Dataset"

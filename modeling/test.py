@@ -11,7 +11,7 @@ ROOT = "/teamspace/studios/this_studio/Group-Activity-Recognition"
 sys.path.append(ROOT)
 
 from baseline1_model import GroupActivity
-from baseline5_model import SequentialGroupActivityPooledPersons
+from baseline8_model import SequentialGroupActivityPooledPersons
 from train import validate_model
 from utils import load_config, GroupActivityRecognitionDataset
 
@@ -36,9 +36,9 @@ def test_model(config, model_path, loss_func, test_transform):
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(ROOT, "configs/baseline5.yaml")
+    config_path = os.path.join(ROOT, "configs/baseline8.yaml")
     config = load_config(config_path)
-    model_path = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline_5/V1.0/epoch19_model.pth'
+    model_path = '/teamspace/studios/this_studio/Group-Activity-Recognition/modeling/outputs/Baseline_8/V1.0/epoch14_model.pth'
     
     test_transform = A.Compose([
         A.Resize(224, 224),
