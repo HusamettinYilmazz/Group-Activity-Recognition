@@ -85,7 +85,7 @@ It was created using publicly available YouTube volleyball videos. The authors a
 - **Figure**: A frame labeled as "Left Spike," with bounding boxes around each player, demonstrating team activity annotations.
 
 ![image](assets/readme_images/player_action_labels.png)
-**Figure**: For each visible player, an action label is annotaed.
+- **Figure**: For each visible player, an action label is annotated.
 
 ### Dataset Statistics
 
@@ -201,17 +201,17 @@ The following confusion matrices from Baseline 5 and Baseline 6 reveal some inte
 <img src="modeling/outputs/Baseline_5/test_conf_matrix.png" alt="Baseline 5 test confusion matrix" width="60%">
 
 #### Baseline 6 Confusion Matrix
-<img src="modeling/outputs/Baseline_6/V2.0/test_conf_matrix.png" alt="Baseline 6 confusion matrix" width="60%">
+<img src="modeling/outputs/Baseline_6/V2.0/test_conf_matrix.png" alt="Baseline 6 test confusion matrix" width="60%">
 
 - The most frequent confusions occur between:
-  - Right winpoint vs. left winpoint
+  - Right winpoint vs. Left winpoint
 
 This behavior is likely due to the pooling of the 12 players from both teams when transitioning from the individual/personal level to the frame/group level. By grouping all players into one unit, the model loses spatial and direction information regarding player positions. 
 
 When the teams are grouped and processed seperatly before concatenation, the player position information is retained. This suggests that a more careful handling of player positions could improve model performance, as observed in Baseline 8.
 
 #### Baseline 8 Confusion Matrix
-<img src="modeling/outputs/Baseline_8/V1.0/epoch19_conf_matrix.png" alt="Baseline 8 confusion matrix" width="60%">
+<img src="modeling/outputs/Baseline_8/V1.0/test_conf_matrix.png" alt="Baseline 8 test confusion matrix" width="60%">
 
 
 --- 
