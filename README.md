@@ -32,7 +32,7 @@
 
 ## Key Implementation Outcomes
 
-- <strong>ResNet50</strong> for feature extraction (replacing AlexNet).
+- <strong>ResNet50</strong> for feature extraction (replacing ResNet-50).
 - <strong>Ablation study</strong> to analyze model components.
 - Implementation of an <strong>end-to-end version</strong>.
 - Achieve <strong>higher performance</strong> across every baseline compared to the original paper.
@@ -61,14 +61,14 @@ Replace the `modeling` directory with the downloaded one:
 import kagglehub
 
 # Download the latest version
-path = kagglehub.model_download("husammm/group-activity-recognition/pyTorch/v0")
+path = kagglehub.model_download("https://www.kaggle.com/models/husammm/GAR-Baseline_8/pyTorch/V1")
 
 print("Path to model dir:", path)
 ```
 
 #### Option 2: Download a checkpoint
 Browse and download the specific checkpoint from Kaggle:  
-[Group Activity Recognition - Checkpoint](https://www.kaggle.com/models/husammm/group-activity-recognition/pyTorch/v0/1)
+[Group Activity Recognition - Checkpoint](https://www.kaggle.com/models/husammm/group-activity-recognition/pyTorch/)
 
 -----
 
@@ -150,26 +150,33 @@ It was created using publicly available YouTube volleyball videos. The authors a
 ### Baselines
 
 - **B1-Image Classification:**  
-   A straightforward image classifier based on ResNet-50, fine-tuned to classify group activities using a single frame from for each clip in video.
+   This baseline is the basic ResNet-50 model fine-tuned for group activity recognition in a single frame.
 
 - **B3-Fine-tuned Person Classification:**  
-   The ResNet-50 CNN model is deployed on each person. Feature extraction for each crop 2048 features are pooled over all people and then fed to a softmax classifier to recognize group activities in a single frame.
+   This baseline is similar to the previous baseline with one distinction. The ResNet-50 model on each player is fine-tuned to recognize person-level actions. Then, feature vector is pooled over all players to recognize group activities in a scene without any fine-tuning of the ResNet-50 model. The rational behind this baseline is to examine a scenario where person-level action annotations as well as group activity annotations are used in a deep learning model that does not model the temporal aspect of group activities. This is very similar to our two-stage model without the temporal modeling.
 
 - **B4-Temporal Model with Image Features:**  
-   A temporal model that uses image features per clip. Each clip consists of 9 frames, and an LSTM is trained on sequences of 9 steps for each clip.
+   This baseline is a temporal extension of the first baseline. It examines the idea of feeding image level features directly to a LSTM model to recognize group activities. In this baseline, the ResNet-50 model is deployed on the whole image and resulting features are fed to a LSTM model.
 
-- **B5-Temporal Model with Person Features:**  
-   A temporal extension of the previous baseline (B3) temporal on crops (LSTM on player level), where person-specific features pooled over all individuals to recognize group activities.
+- **B5-Two-stage Model without without LSTM2:**  
+   This baseline is a variant of the final model, omitting the group-level temporal model (LSTM 2). In other words, the final classification is done based on the outputs of the temporal models for individual person action labels, but without an additional group-level LSTM.
 
 - **B6-Two-stage Model without LSTM 1:**  
-  Individual features pooled over all people are fed into an LSTM model to capture group dynamics.
+  This baseline is a variant of the final model, omitting the person-level temporal model (LSTM 1). Instead, the person-level classification is done only with the fine-tuned person CNN.
 
-- **B7-Two-stage Model without LSTM 2:**  
-   The full model (V1) trains an LSTM on crop-level data (LSTM on a player level). Clips are extracted: sequences of 9 steps per player for each frame. A max-pooling operation is applied to the players, and LSTM 2 is trained on the frame level.
+- **B7-Two-stage Hierarchical Model (End to End):**  
+   This baseline is a full model (V1) trains an LSTM on crop-level data (LSTM on a player level). sequence are extracted of 9 steps per player for each frame then, Pooling operation is applied to the players then, LSTM 2 is trained on the pooled frame level.
 
-- **B8-Two-stage Hierarchical Model (End to End):**  
-   The full model (V2) trains an LSTM on crop-level data (LSTM on a player level). Clips are extracted as sequences of 9 steps per player for each frame. A max-pooling operation is applied to each player's team in a dependent way. Features from both teams are concatenated along the feature dimension, and the result is fed to LSTM 2 at the frame level.
+   <p align="center">
+    <img src="assets/readme_images/B7_model_arch.png" alt="B7-Two-stage Model without LSTM 2">
+   </p>
 
+- **B8-Two-stage Hierarchical Model (each team features pooled independent):**  
+   This baseline is a full model (V2) trains an LSTM on crop-level data (LSTM on a player level). sequence are extracted of 9 steps per player for each frame then, a pooling operation is applied to each team's players in an independent way from other team. Features from both teams are concatenated to creat frame level representation then, fed to LSTM 2 to get frame level action.
+
+   <p align="center">
+    <img src="assets/readme_images/B8_model_arch.png" alt="B8- Endt to End Two-stage Model">
+   </p>
 ---
 ## Performance comparison
 
@@ -206,9 +213,9 @@ The following confusion matrices from Baseline 5 and Baseline 6 reveal some inte
 - The most frequent confusions occur between:
   - Right winpoint vs. Left winpoint
 
-This behavior is likely due to the pooling of the 12 players from both teams when transitioning from the individual/personal level to the frame/group level. By grouping all players into one unit, the model loses spatial and direction information regarding player positions. 
+The observed performance degradation can be attributed to the aggregation of all 12 players—across both teams—during the transition from player-level to frame-level representation via pooling. This approach inherently discards spatial and directional information critical to understanding inter-player dynamics.
 
-When the teams are grouped and processed seperatly before concatenation, the player position information is retained. This suggests that a more careful handling of player positions could improve model performance, as observed in Baseline 8.
+By contrast, processing players from each team independently prior to concatenation preserves intra-team spatial structure and relative positioning. This design choice, as implemented in Baseline 8, highlights the importance of maintaining structured spatial information, suggesting that more granular handling of player positions can lead to improved model fidelity and overall performance.
 
 #### Baseline 8 Confusion Matrix
 <img src="modeling/outputs/Baseline_8/V1.0/test_conf_matrix.png" alt="Baseline 8 test confusion matrix" width="60%">
